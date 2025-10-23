@@ -1,0 +1,56 @@
+name: Get NCAA PBP Data 
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 11 * * *'
+
+jobs:
+  Get-NBA-MVP-Odds:
+    name: Get NCAA PBP Data 
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3  
+      
+      - uses: r-lib/actions/setup-r@v2
+        with: 
+          use-public-rspm: true
+          r-version: 'release'
+          
+      - name: Cache R packages (including CRAN and GitHub sourced packages)
+        uses: actions/cache@v3 
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-${{ hashFiles('**/DESCRIPTION') }}
+          restore-keys: ${{ runner.os }}-r-
+
+      - name: Install CRAN packages
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with: 
+          packages: tidyverse, chromote, remotes
+          
+      - name: Install bigballR
+        run: |
+          if (!requireNamespace("bigballR", quietly = TRUE)) {
+            remotes::install_github("jflancer/bigballR")
+          }
+        shell: Rscript {0}
+            
+      - name: Run R update script
+        run: Rscript get_ncaa_pbp.R
+        shell: bash
+
+      - name: Commit changes in data folder
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add data/pbp*.csv
+          git diff --cached --quiet || git commit -m "Auto-update: PBP data"
+        shell: bash
+
+      - name: Push changes
+        run: git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
