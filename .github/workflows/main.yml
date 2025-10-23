@@ -46,7 +46,7 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add data/2025-26/pbp*.csv
+          git add data/2025-26/pbp*.parquet
           git diff --cached --quiet || git commit -m "Auto-update: PBP data"
         shell: bash
 
