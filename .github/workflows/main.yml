@@ -39,7 +39,7 @@ jobs:
         shell: Rscript {0}
             
       - name: Run R update script
-        run: Rscript get_ncaa_pbp.R
+        run: Rscript get_pbp_data.R
         shell: bash
 
       - name: Commit changes in data folder
