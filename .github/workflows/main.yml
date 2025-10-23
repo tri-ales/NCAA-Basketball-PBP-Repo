@@ -30,13 +30,9 @@ jobs:
         uses: r-lib/actions/setup-r-dependencies@v2
         with: 
           packages: tidyverse, chromote, remotes, arrow
-          
-      - name: Install bigballR
-        run: |
-          if (!requireNamespace("bigballR", quietly = TRUE)) {
-            remotes::install_github("jflancer/bigballR")
-          }
-        shell: Rscript {0}
+          extra-packages: |
+                  any::remotes
+                  jflancer/bigballR
             
       - name: Run R update script
         run: Rscript get_pbp_data.R
