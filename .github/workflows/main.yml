@@ -3,10 +3,10 @@ name: Get NCAA PBP Data
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 11 * * *'
+    - cron: '30 3 * * *'
 
 jobs:
-  Get-NBA-MVP-Odds:
+  Get-NCAA-PBP-Data:
     name: Get NCAA PBP Data 
     runs-on: ubuntu-latest
     env:
@@ -29,7 +29,7 @@ jobs:
       - name: Install CRAN packages
         uses: r-lib/actions/setup-r-dependencies@v2
         with: 
-          packages: tidyverse, chromote, remotes
+          packages: tidyverse, chromote, remotes, arrow
           
       - name: Install bigballR
         run: |
@@ -46,7 +46,7 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add data/pbp*.csv
+          git add data/2025-26/pbp*.csv
           git diff --cached --quiet || git commit -m "Auto-update: PBP data"
         shell: bash
 
