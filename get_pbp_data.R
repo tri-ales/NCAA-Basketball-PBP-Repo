@@ -15,7 +15,7 @@ time <- c(5:8)
 pbp_dfs <- list()
 
 i <- 1
-while(i < nrow(games)) {
+while(i <= nrow(games)) {
   pbp <- get_play_by_play(games[i, 'GameID'])
   pbp_dfs[[i]] <- pbp
   
@@ -29,3 +29,4 @@ while(i < nrow(games)) {
 pbp_all <- bind_rows(pbp_dfs)
 
 write_parquet(pbp_all, paste0("data/2025-26/",  "pbp_", gsub("-", "_", today), ".parquet"))
+
