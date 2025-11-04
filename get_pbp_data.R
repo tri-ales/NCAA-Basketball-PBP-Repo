@@ -29,7 +29,8 @@ while(i <= nrow(games)) {
 
 pbp_all <- bind_rows(pbp_dfs)
 
-write_parquet(pbp_all, paste0("data/2025-26/",  "pbp_", gsub("-", "_", today), ".parquet"))
+write_parquet(pbp_all, paste0("data/2025-26/",  "pbp_", gsub("-", "_", prev_day), ".parquet"))
+
 
 
 
