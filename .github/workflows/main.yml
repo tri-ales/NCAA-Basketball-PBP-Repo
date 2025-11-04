@@ -29,6 +29,7 @@ jobs:
       - name: Install CRAN packages
         uses: r-lib/actions/setup-r-dependencies@v2
         with: 
+          cache: always
           packages: tidyverse, chromote, remotes, arrow
           extra-packages: |
                   any::remotes
